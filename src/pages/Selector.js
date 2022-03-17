@@ -236,7 +236,7 @@ const Selector = (props) => {
 
       <div
         className="sm:hidden overflow-y-scroll bg-gray-800 flex flex-col w-full sm:w-auto sm:px-10 sm:mr-10"
-        style={{ maxHeight: "80vh" }}
+        style={{ maxHeight: "65vh" }}
       >
         <div
           className="bg-white"
@@ -274,7 +274,7 @@ const Selector = (props) => {
             ? " border-t-2 border-solid border-white bg-gray-800 "
             : "bg-gray-100 ") + " sm:hidden flex-wrap overflow-y-scroll "
         }
-        style={{ height: "20vh" }}
+        style={{ height: "35vh" }}
       >
         {racersLeft.map((val) => {
           return <Racer name={val} />;
