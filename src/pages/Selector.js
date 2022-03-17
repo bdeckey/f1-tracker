@@ -153,6 +153,22 @@ const Selector = (props) => {
     );
   };
 
+  const copytoClipboard = () => {
+    /* Get the text field */
+    let copyText = "Bahrain - March 20 \n";
+    for (let i in picks) {
+      let place = parseInt(i) + 1;
+      copyText += `#${place} ` + picks[i] + "\n";
+    }
+    copyText += "\n\n\n";
+    for (let i in picks) {
+      copyText += picks[i] + "-";
+    }
+
+    /* Copy the text inside the text field */
+    navigator.clipboard.writeText(copyText);
+  };
+
   const picksToString = () => {
     let emailString = "Bahrain - March 20%0A";
     for (let i in picks) {
@@ -183,6 +199,7 @@ const Selector = (props) => {
           {" "}
           Submit Picks{" "}
         </a>
+        
         <p className="text-center text-white text-lg my-1">
           Bahrain - March 20
         </p>
@@ -219,12 +236,13 @@ const Selector = (props) => {
 
           <p className="text-xl mt-10 mb-2">Rules of the Game</p>
           <div className="mx-10">
-           
             <p>
-              A <span className="font-bold">correct pick</span> gets <span className="font-bold text-lg">10</span> points.
+              A <span className="font-bold">correct pick</span> gets{" "}
+              <span className="font-bold text-lg">10</span> points.
             </p>
             <p>
-            <span className="font-bold">Incorrect picks</span> score the following:
+              <span className="font-bold">Incorrect picks</span> score the
+              following:
             </p>
             <p>1 place away: 8 points</p>
             <p>2 places away: 5 points</p>
@@ -281,15 +299,19 @@ const Selector = (props) => {
         })}
 
         {racersLeft.length === 0 ? (
-          <div className="mt-10">
+          <div className="mt-10 flex flex-col space-y-3">
             {" "}
             <a
               href={`mailto:bdeckey85@gmail.com?subject=F1%20Picks&body=${picksToString()}`}
               className="mt-10 p-3 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800"
             >
-              {" "}
-              Submit Picks{" "}
-            </a>{" "}
+              Submit Picks
+            </a>
+            <button 
+            onClick={() => copytoClipboard()}
+            className="mt-10 p-3 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800">
+              Copy Text
+            </button>
           </div>
         ) : null}
       </div>
