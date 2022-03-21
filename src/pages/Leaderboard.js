@@ -62,9 +62,11 @@ const Leaderboard = (props) => {
   useEffect(() => {
     let tempStats = [];
     for (let i in picks) {
+      
       let username = picks[i].user;
       let late = picks[i].late && true;
       let userPicks = picks[i].picks.split("-");
+      userPicks = userPicks.filter((value) => value !== undefined && value !== "")
       let points = 0;
       let scoreSheet = [];
       for (let i in userPicks) {
@@ -139,7 +141,7 @@ const Leaderboard = (props) => {
         <div className="ease ">
           {showStats ? (
             <div
-              className="absolute bg-white z-20 shadow-lg p-10 top-0 flex flex-col w-full xl:w-2/3"
+              className="absolute bg-white z-20 shadow-lg py-10 px-2 top-0 flex flex-col w-full xl:w-2/3"
               style={{
                 left: "50%",
                 transform: "translate(-50%, 0)",
@@ -149,7 +151,9 @@ const Leaderboard = (props) => {
                 <ArrowCircleLeftIcon className=" absolute top-2 left-2 h-10 " />
               </button>
               <div className="flex flex-row space-x-3 justify-center items-center">
-                <p className="text-2xl  font-bold text-left items-center">{userRow.username}</p>
+                <p className="text-2xl  font-bold text-left items-center">
+                  {userRow.username}
+                </p>
                 <p className="  p-1 rounded-xl "> {userRow.points} points</p>
                 <button
                   onClick={() => setResultsOrPicks(!resultsOrPicks)}
@@ -158,14 +162,12 @@ const Leaderboard = (props) => {
                   {/* {resultsOrPicks ? "Final Results" : "User Picks"} */}
                   Change View
                 </button>
-               
               </div>
 
               <div className="flex flex-col space-x-5 mt-5">
-               
                 {resultsOrPicks ? (
                   <div className=" p-2 px-4 border-2 border-dashed border-gray-100 rounded-lg">
-                         <p>Final Results</p>
+                    <p>Final Results</p>
                     {finalResults.map((row, index) => {
                       let team = row.split(",")[0];
                       let name = row.split(",")[1];
@@ -211,7 +213,7 @@ const Leaderboard = (props) => {
                   </div>
                 ) : (
                   <div className=" p-2 px-4 border-2 border-dashed border-gray-100 rounded-lg">
-                      <p>User Picks</p>
+                    <p>User Picks</p>
                     {userRow.userPicks.map((row, index) => {
                       let team = row.split(",")[0];
                       let name = row.split(",")[1];
