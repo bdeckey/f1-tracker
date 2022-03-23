@@ -27,32 +27,24 @@ const qualyResults = [
 
 const finalResults = [
   "Ferrari,Charles Leclerc",
-
   "Ferrari,Carlos Sainz",
-
   "Mercedes,Lewis Hamilton",
   "Mercedes,George Russell",
-
   "Haas, Kevin Magnussen",
   "Alfa Romeo, Valtteri Bottas",
   "Alpine ,Esteban Ocon",
   "AlphaTauri ,Yuki Tsunoda",
-
   "Alpine ,Fernando Alonso",
   "Alfa Romeo ,Guanyu Zhou",
   "Haas, Mick Schumacher",
   "Aston Martin ,Lance Stroll",
-
   "Williams ,Alex Albon",
   "McLaren,Daniel Ricciardo",
   "McLaren,Lando Norris",
   "Williams, Nicholas Latifi",
-
   "Aston Martin ,Sebastian Vettel",
-
   "Red Bull,Sergio Perez",
   "Red Bull,Max Verstappen",
-
   "AlphaTauri ,Pierre Gasly",
 ];
 
