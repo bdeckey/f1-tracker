@@ -12,8 +12,7 @@ class DataService {
     // post request to post and get the user data on sign in
     // data - {email: <email returned by auth>}
     fetchUser(data) {
-        // const headers = this.getHeaders(token)
-        return http.post("/user", data, headers);
+        return http.post("/user", data);
     }
 
     // updateUser(data) {

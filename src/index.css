@@ -3,11 +3,35 @@
 @tailwind utilities;
 
 .ease {
-    transition: all .4s ease;
-    -webkit-transition: all .4s ease;
+  transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
+}
+
+.easeFast {
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+}
+
+.loader {
+  border-top-color: #e26258;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+}
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
   }
-  
-  .easeFast {
-    transition: all .2s ease;
-    -webkit-transition: all .2s ease;
+  100% {
+    -webkit-transform: rotate(360deg);
   }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
