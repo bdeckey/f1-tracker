@@ -110,12 +110,14 @@ const Selector = (props) => {
     let firstLetterFirst;
     let firstLetterLast;
     let firstLetterTeam;
+    let lastName;
     if (picked) {
       let split = picked.split(",");
       let names = split[1].split(" ");
       firstLetterFirst = names[0];
       firstLetterLast = names[1][0];
       firstLetterTeam = split[0];
+      lastName = names[1];
     }
 
     const whenClicked = () => {
@@ -131,15 +133,15 @@ const Selector = (props) => {
         onClick={() => whenClicked()}
         className={
           (index === 0 ? "" : "mt-5 ") +
-          " border-white border-solid border-t-2 border-x-2 p-4 flex justify-center hover:bg-gray-700"
+          " border-white border-solid border-t-2 border-x-2  flex justify-center hover:bg-gray-700"
         }
-        style={{ width: "100px", height: "80px" }}
+        style={{ width: "150px", height: "80px" }}
       >
         {picked ? (
           <div className="text-white">
-            <p className="text-xs">{firstLetterTeam}</p>
-            <p className="text-sm">
-              {firstLetterFirst} {firstLetterLast}
+            <p className="text-sm">{firstLetterTeam}</p>
+            <p className="text-md">
+              {firstLetterFirst} {lastName}
             </p>
           </div>
         ) : (

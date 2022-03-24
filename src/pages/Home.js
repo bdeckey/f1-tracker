@@ -83,7 +83,7 @@ const Home = (props) => {
               {update ? (
                 <div
                   className="absolute top-0 left-0 z-40 bg-white"
-                  style={{ width: "100vw", height: "100vh" }}
+                  style={{ width: "100vw", height: "100%" }}
                 >
                   <button onClick={() => setUpdate(false)}>Close</button>
                   <Selector email={user.email} previous={user.races[0]} />
@@ -103,7 +103,7 @@ const Home = (props) => {
                 let name = val.name;
 
                 return (
-                  <div className="flex flex-row items-center space-x-5 justify-center my-2 border-b-solid border-b-2 border-gray-50 ease hover:py-1">
+                  <div className="flex flex-row items-center space-x-5 justify-center my-2 border-b-solid border-b-2 border-gray-50 ease">
                     <p className="w-1/6 text-xs ">#{index + 1} </p>
                     <p className="w-1/2 text-sm"> {name}</p>
                     <p className="w-2/5 text-xs"> {team}</p>

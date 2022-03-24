@@ -155,7 +155,7 @@ const Login = (props) => {
         pauseOnHover
       />
       <div className="flex justify-center pt-20">
-        <div className="bg-gray-50 px-10 py-10 mx-10 rounded-lg shadow-2xl text-left w-full md:w-1/2 xl:w-1/3">
+        <div className="bg-gray-50 px-10 py-10 mx-5 rounded-lg shadow-2xl text-left w-full md:w-1/2 xl:w-1/3">
           <div className="flex justify-center mb-3">
             <p className="text-xl font-bold">
               <span className="text-red-600">F</span>
@@ -215,7 +215,7 @@ const Login = (props) => {
                     </button>
                     <button
                       onClick={() => setAreSigningUp(true)}
-                      className="bg-gray-300 px-4 py-1 rounded-lg text-sm"
+                      className="bg-gray-300 px-4 py-1 rounded-lg sm:w-1/3 text-sm"
                     >
                       Register
                     </button>
