@@ -19,7 +19,6 @@ const Home = (props) => {
         loadUsers(parsed);
       }
     }
-    
   }, []);
 
   const updateUserInfo = (userList, user) => {
@@ -45,7 +44,7 @@ const Home = (props) => {
         // console.log("Fetching User Information");
         // console.log(response.data);
         setUsers(response.data.response);
-        updateUserInfo(response.data.response, parsed)
+        updateUserInfo(response.data.response, parsed);
       })
       .catch((e) => {
         console.log(e);
@@ -75,7 +74,26 @@ const Home = (props) => {
         </p>
       </div>
       {user ? (
-        user.races.length > 0 ? null : (
+        user.races.length > 0 ? (
+          <div className="flex justify-center">
+            <div className=" lg:w-1/2 p-2 px-4 border-2 border-dashed border-gray-100 rounded-lg">
+              <p>User Picks - {user.races[0].raceTitle}</p>
+
+              {user.races[0].racePicks.map((val, index) => {
+                let team = val.team;
+                let name = val.name;
+
+                return (
+                  <div className="flex flex-row items-center space-x-5 justify-center my-2 border-b-solid border-b-2 border-gray-50 ease hover:py-1">
+                    <p className="w-1/6 text-xs ">#{index + 1} </p>
+                    <p className="w-1/2 text-sm"> {name}</p>
+                    <p className="w-2/5 text-xs"> {team}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
           <Selector email={user.email} />
         )
       ) : null}
