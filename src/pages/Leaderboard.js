@@ -132,7 +132,7 @@ const Leaderboard = (props) => {
       <div className="ease">
         <button
           onClick={() => setShowStats(!showStats)}
-          className=" w-full flex flex-row items-center relative space-x-5 justify-center py-2 relative z-0 bg-gray-100 hover:bg-gray-200 ease"
+          className=" w-full flex flex-row items-center relative space-x-5 justify-center py-2  z-0 bg-gray-100 hover:bg-gray-200 ease"
         >
           <p className="absolute left-5 text-xs text-gray-400 font-bold">
             {" "}
