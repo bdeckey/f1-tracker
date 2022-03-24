@@ -14,8 +14,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/leader" element={<Leaderboard />} />
-            <Route path="/pick" element={<Selector />} />
+            <Route path="/app" element={<Home />} />
           </Routes>
         </Router>
       </Splash>

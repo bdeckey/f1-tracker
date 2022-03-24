@@ -15,11 +15,13 @@ class DataService {
         return http.post("/user", data);
     }
 
-    // updateUser(data) {
-    //     const token = localStorage.getItem('accessToken')
-    //     const headers = this.getHeaders(token)
-    //     return http.put("/user", data, headers);
-    // }
+    addRace(data) {
+        return http.post("/race", data);
+    }
+
+    getAllUsers() {
+        return http.get("/user");
+    }
 
     // postAppointment(data) {
     //     const token = localStorage.getItem('accessToken')

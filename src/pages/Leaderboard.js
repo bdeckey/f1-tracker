@@ -2,6 +2,8 @@ import react, { useState, useEffect } from "react";
 import { picks } from "../data/picks";
 import { ArrowCircleLeftIcon, XIcon } from "@heroicons/react/solid";
 
+import { useNavigate } from "react-router-dom";
+
 const qualyResults = [
   "Ferrari,Charles Leclerc",
   "Red Bull,Max Verstappen",
@@ -51,14 +53,33 @@ const finalResults = [
 const Leaderboard = (props) => {
   const [stats, setStats] = useState([]);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token !== null) {
+      let parsed = JSON.parse(token);
+      // console.log(parsed);
+      if (!("_id" in parsed)) {
+        navigate("/");
+      }
+    }
+  }, []);
+
+  const logout = () => {
+    localStorage.setItem("accessToken", null);
+    navigate("/");
+  };
+
   useEffect(() => {
     let tempStats = [];
     for (let i in picks) {
-      
       let username = picks[i].user;
       let late = picks[i].late && true;
       let userPicks = picks[i].picks.split("-");
-      userPicks = userPicks.filter((value) => value !== undefined && value !== "")
+      userPicks = userPicks.filter(
+        (value) => value !== undefined && value !== ""
+      );
       let points = 0;
       let scoreSheet = [];
       for (let i in userPicks) {
@@ -68,26 +89,26 @@ const Leaderboard = (props) => {
           case 0:
             points += 10;
             scoreSheet.push(10);
-            console.log(username, " scored 10 points for pick: ", userPicks[i]);
+            // console.log(username, " scored 10 points for pick: ", userPicks[i]);
             break;
           case 1:
             scoreSheet.push(8);
-            console.log(username, " scored 8 points for pick: ", userPicks[i]);
+            // console.log(username, " scored 8 points for pick: ", userPicks[i]);
             points += 8;
             break;
           case 2:
-            console.log(username, " scored 5 points for pick: ", userPicks[i]);
+            // console.log(username, " scored 5 points for pick: ", userPicks[i]);
             points += 5;
             scoreSheet.push(5);
             break;
           case 3:
-            console.log(username, " scored 1 points for pick: ", userPicks[i]);
+            // console.log(username, " scored 1 points for pick: ", userPicks[i]);
             points += 1;
             scoreSheet.push(1);
             break;
           default:
             scoreSheet.push(0);
-            console.log(username, " scored 0 points for pick: ", userPicks[i]);
+            // console.log(username, " scored 0 points for pick: ", userPicks[i]);
             break;
         }
       }
@@ -257,10 +278,18 @@ const Leaderboard = (props) => {
     );
   };
 
-  console.log(picks);
+  // console.log(picks);
 
   return (
     <div className="flex flex-col justify-center items-center">
+      <div className="absolute top-10 right-20 ">
+        <button
+          onClick={() => logout()}
+          className="px-2 py-1 bg-gray-400 rounded-lg shadow-lg"
+        >
+          Log Out
+        </button>
+      </div>
       <div className="mt-10 text-2xl">
         <p>Leaderboard</p>
       </div>
@@ -277,7 +306,7 @@ const Leaderboard = (props) => {
         <div className="relative ">
           {stats &&
             stats.map((val, index) => {
-              console.log(val);
+              // console.log(val);
               return <Row userRow={val} place={index} />;
             })}
         </div>

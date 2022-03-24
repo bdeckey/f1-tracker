@@ -1,5 +1,7 @@
 import { range } from "lodash";
 import react, { useState, useEffect } from "react";
+import DataService from "../services/DataService";
+import Loader from "../components/Loader";
 
 const lineup = [
   [1, 2],
@@ -38,12 +40,15 @@ const racers = [
 ];
 
 const Selector = (props) => {
+  const { email } = props;
   const [picks, setPicks] = useState([]);
   const [racersLeft, setRacersLeft] = useState(racers);
   const [selectedGridSpot, setSelectedGridSpot] = useState("");
   const [selectedRacer, setSelectedRacer] = useState("");
 
   const [rulesOpen, setRulesOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let temp = [];
@@ -153,33 +158,30 @@ const Selector = (props) => {
     );
   };
 
-  const copytoClipboard = () => {
-    /* Get the text field */
-    let copyText = "Bahrain - March 20 \n";
+  const picksToDatabase = () => {
+    setLoading(true);
+    let currentPicks = [];
     for (let i in picks) {
-      let place = parseInt(i) + 1;
-      copyText += `#${place} ` + picks[i] + "\n";
-    }
-    copyText += "\n\n\n";
-    for (let i in picks) {
-      copyText += picks[i] + "-";
+      let split = picks[i].split(",");
+      let name = split[1].trim();
+      let team = split[0].trim();
+      currentPicks.push({ name: name, team: team, position: i });
     }
 
-    /* Copy the text inside the text field */
-    navigator.clipboard.writeText(copyText);
-  };
+    let data = { raceTitle: "Saudi Arabia - 2022", racePicks: currentPicks };
 
-  const picksToString = () => {
-    let emailString = "Bahrain - March 20%0A";
-    for (let i in picks) {
-      let place = parseInt(i) + 1;
-      emailString += `#${place} ` + picks[i] + "%0A";
-    }
-    emailString += "%0A%0A%0A";
-    for (let i in picks) {
-      emailString += picks[i] + "-";
-    }
-    return emailString;
+    console.log(data);
+
+    DataService.addRace({ email: email, race: data })
+      .then((response) => {
+        console.log("response:", response.data);
+        window.location.reload(false);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
   };
 
   return (
@@ -192,14 +194,14 @@ const Selector = (props) => {
           className="border-2 border-dotted border-yellow-400"
           style={{ height: "5px", width: "100%" }}
         ></div>
-        <a
+        {/* <a
           href={`mailto:bdeckey85@gmail.com?subject=F1%20Picks&body=${picksToString()}`}
           className="mb-5 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800"
         >
           {" "}
           Submit Picks{" "}
-        </a>
-        
+        </a> */}
+
         <p className="text-center text-white text-lg my-1">
           Bahrain - March 20
         </p>
@@ -260,21 +262,9 @@ const Selector = (props) => {
           className="bg-white"
           style={{ height: "5px", width: "100%" }}
         ></div>
-        <div className="flex flex-row space-x-3 justify-center">
-          <a
-            href={`mailto:bdeckey85@gmail.com?subject=F1%20Picks&body=${picksToString()}`}
-            className=" px-2  text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800"
-          >
-            {" "}
-            Submit Picks{" "}
-          </a>
-          <button className="text-white" onClick={() => setRulesOpen(true)}>
-            Rules
-          </button>
-        </div>
 
         <p className="text-center text-white text-lg my-1">
-          Bahrain - March 20
+          Saudi Arabia - March 27
         </p>
         {lineup.map((val) => {
           return (
@@ -292,26 +282,25 @@ const Selector = (props) => {
             ? " border-t-2 border-solid border-white bg-gray-800 "
             : "bg-gray-100 ") + " sm:hidden flex-wrap overflow-y-scroll "
         }
-        style={{ height: "35vh" }}
+        style={{ height: "25vh" }}
       >
         {racersLeft.map((val) => {
           return <Racer name={val} />;
         })}
 
         {racersLeft.length === 0 ? (
-          <div className="mt-10 flex flex-col space-y-3">
-            {" "}
-            <a
-              href={`mailto:bdeckey85@gmail.com?subject=F1%20Picks&body=${picksToString()}`}
-              className="mt-10 p-3 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800"
-            >
-              Submit Picks
-            </a>
-            <button 
-            onClick={() => copytoClipboard()}
-            className="mt-10 p-3 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800">
-              Copy Text
-            </button>
+          <div className="flex flex-col space-y-3">
+            {loading ? (
+              <Loader />
+            ) : (
+              <button
+                // href={`mailto:bdeckey85@gmail.com?subject=F1%20Picks&body=${picksToString()}`}
+                onClick={() => picksToDatabase()}
+                className="mt-10 p-3 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800"
+              >
+                Submit Picks
+              </button>
+            )}
           </div>
         ) : null}
       </div>
