@@ -59,6 +59,45 @@ const Home = (props) => {
     navigate("/");
   };
 
+  const PickDisplay = ({ user }) => {
+    return (
+      <div className="flex justify-center">
+        <div className=" lg:w-1/2 p-2 px-4 border-2 border-dashed border-gray-100 rounded-lg">
+          {update ? (
+            <div
+              className="absolute top-0 left-0 z-40 bg-white"
+              style={{ width: "100vw", height: "100%" }}
+            >
+              <button onClick={() => setUpdate(false)}>Close</button>
+              <Selector email={user.email} previous={user.races[0]} />
+            </div>
+          ) : null}
+          <div className="flex flex-row justify-between mx-5 my-3 space-x-5">
+            <p className="font-bold text-lg">
+              User Picks - {user.races[0].raceTitle}
+            </p>
+            <button onClick={() => setUpdate(true)} className="">
+              Edit Picks
+            </button>
+          </div>
+
+          {user.races[0].racePicks.map((val, index) => {
+            let team = val.team;
+            let name = val.name;
+
+            return (
+              <div className="flex flex-row items-center space-x-5 justify-center my-2 border-b-solid border-b-2 border-gray-50 ease">
+                <p className="w-1/6 text-xs ">#{index + 1} </p>
+                <p className="w-1/2 text-sm"> {name}</p>
+                <p className="w-2/5 text-xs"> {team}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <div className="absolute top-2 md:top-10 md:right-20 right-2 ">
@@ -78,56 +117,11 @@ const Home = (props) => {
       </div>
       {user ? (
         user.races.length > 0 ? (
-          <div className="flex justify-center">
-            <div className=" lg:w-1/2 p-2 px-4 border-2 border-dashed border-gray-100 rounded-lg">
-              {update ? (
-                <div
-                  className="absolute top-0 left-0 z-40 bg-white"
-                  style={{ width: "100vw", height: "100%" }}
-                >
-                  <button onClick={() => setUpdate(false)}>Close</button>
-                  <Selector email={user.email} previous={user.races[0]} />
-                </div>
-              ) : null}
-              <div className="flex flex-row justify-between mx-5 my-3 space-x-5">
-                <p className="font-bold text-lg">
-                  User Picks - {user.races[0].raceTitle}
-                </p>
-                <button onClick={() => setUpdate(true)} className="">
-                  Update
-                </button>
-              </div>
-
-              {user.races[0].racePicks.map((val, index) => {
-                let team = val.team;
-                let name = val.name;
-
-                return (
-                  <div className="flex flex-row items-center space-x-5 justify-center my-2 border-b-solid border-b-2 border-gray-50 ease">
-                    <p className="w-1/6 text-xs ">#{index + 1} </p>
-                    <p className="w-1/2 text-sm"> {name}</p>
-                    <p className="w-2/5 text-xs"> {team}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <PickDisplay user={user} />
         ) : (
           <Selector email={user.email} />
         )
       ) : null}
-
-      {/* <div className="">
-        <p>Leaderboards</p>
-        {users.map((val) => {
-          return (
-            <div className="flex flex-row space-x-5 justify-center">
-              <p>{val.name}</p>
-              <p>{val.points}</p>
-            </div>
-          );
-        })}
-      </div> */}
     </div>
   );
 };
