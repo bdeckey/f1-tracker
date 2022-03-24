@@ -40,9 +40,10 @@ const racers = [
 ];
 
 const Selector = (props) => {
-  const { email } = props;
+  const { email, previous } = props;
   const [picks, setPicks] = useState([]);
   const [racersLeft, setRacersLeft] = useState(racers);
+
   const [selectedGridSpot, setSelectedGridSpot] = useState("");
   const [selectedRacer, setSelectedRacer] = useState("");
 
@@ -51,11 +52,22 @@ const Selector = (props) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let temp = [];
-    for (let i = 0; i < 20, i++; ) {
-      temp.push(0);
+    if (previous) {
+      let tempPicks = [];
+      for (let i in previous.racePicks) {
+        let curPick = previous.racePicks[i];
+        let pickString = curPick.team + "," + curPick.name;
+        tempPicks.push(pickString);
+      }
+      setPicks(tempPicks);
+      setRacersLeft([]);
+    } else {
+      let temp = [];
+      for (let i = 0; i < 20, i++; ) {
+        temp.push(0);
+      }
+      setPicks(temp);
     }
-    setPicks(temp);
   }, []);
 
   const addPick = (index, name) => {
@@ -168,20 +180,36 @@ const Selector = (props) => {
       currentPicks.push({ name: name, team: team, position: i });
     }
 
-    let data = { raceTitle: "Saudi Arabia - 2022", racePicks: currentPicks };
+    if (!previous) {
+      let data = { raceTitle: "Saudi Arabia - 2022", racePicks: currentPicks };
 
-    console.log(data);
+      console.log(data);
 
-    DataService.addRace({ email: email, race: data })
-      .then((response) => {
-        console.log("response:", response.data);
-        window.location.reload(false);
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoading(false);
-      });
+      DataService.addRace({ email: email, race: data })
+        .then((response) => {
+          console.log("response:", response.data);
+          window.location.reload(false);
+          setLoading(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setLoading(false);
+        });
+    } else {
+      let data = { email: email, raceId: previous._id ,racePicks: currentPicks };
+
+      DataService.updateRace(data)
+        .then((response) => {
+          console.log("response:", response.data);
+          window.location.reload(false);
+          setLoading(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setLoading(false);
+        });
+    }
+
   };
 
   return (
@@ -194,16 +222,24 @@ const Selector = (props) => {
           className="border-2 border-dotted border-yellow-400"
           style={{ height: "5px", width: "100%" }}
         ></div>
-        {/* <a
-          href={`mailto:bdeckey85@gmail.com?subject=F1%20Picks&body=${picksToString()}`}
-          className="mb-5 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800"
-        >
-          {" "}
-          Submit Picks{" "}
-        </a> */}
+        {racersLeft.length === 0 ? (
+          <div className="flex flex-col space-y-3">
+            {loading ? (
+              <Loader />
+            ) : (
+              <button
+                // href={`mailto:bdeckey85@gmail.com?subject=F1%20Picks&body=${picksToString()}`}
+                onClick={() => picksToDatabase()}
+                className="mt-10 p-3 text-white text-lg border-solid border-white border-2 rounded-lg hover:bg-white hover:text-gray-800"
+              >
+                Submit Picks
+              </button>
+            )}
+          </div>
+        ) : null}
 
         <p className="text-center text-white text-lg my-1">
-          Bahrain - March 20
+          Saudi Arabia - March 27
         </p>
         {lineup.map((val) => {
           return (

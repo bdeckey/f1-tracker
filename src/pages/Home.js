@@ -6,7 +6,10 @@ import Selector from "./Selector";
 const Home = (props) => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState(null);
+  const [update, setUpdate] = useState(false);
   const navigate = useNavigate();
+
+  console.log(user);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -77,7 +80,23 @@ const Home = (props) => {
         user.races.length > 0 ? (
           <div className="flex justify-center">
             <div className=" lg:w-1/2 p-2 px-4 border-2 border-dashed border-gray-100 rounded-lg">
-              <p>User Picks - {user.races[0].raceTitle}</p>
+              {update ? (
+                <div
+                  className="absolute top-0 left-0 z-40 bg-white"
+                  style={{ width: "100vw", height: "100vh" }}
+                >
+                  <button onClick={() => setUpdate(false)}>Close</button>
+                  <Selector email={user.email} previous={user.races[0]} />
+                </div>
+              ) : null}
+              <div className="flex flex-row justify-between mx-5 my-3 space-x-5">
+                <p className="font-bold text-lg">
+                  User Picks - {user.races[0].raceTitle}
+                </p>
+                <button onClick={() => setUpdate(true)} className="">
+                  Update
+                </button>
+              </div>
 
               {user.races[0].racePicks.map((val, index) => {
                 let team = val.team;
